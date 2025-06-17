@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Component;
 
-import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -93,6 +92,86 @@ public class JdbcProductDao implements ProductDao {
         }
 
         // Return the list of Film objects.
+        return products;
+    }
+
+    // DELETE a product by ID
+    public boolean deleteById(int id) {
+
+        try (Connection conn = dataSource.getConnection()) {
+
+            // First delete from order details the parent that hold productID
+            try (PreparedStatement deleteDetails = conn.prepareStatement("""
+                            DELETE FROM `order details` WHERE ProductID = ?;
+                    """)) {
+                deleteDetails.setInt(1, id);
+                deleteDetails.executeUpdate();
+            }
+
+            String sql = "DELETE FROM products WHERE ProductID = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setInt(1, id);
+                int rowsAffected = stmt.executeUpdate();
+                return rowsAffected > 0;
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return false;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    //  UPDATE a product by ID
+    public boolean update(Product product) {
+        String sql = """
+                    UPDATE products 
+                    SET ProductName = ?, CategoryID = ?, UnitPrice = ?
+                    WHERE ProductID = ?
+                """;
+
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, product.getProductName());
+            stmt.setInt(2, product.getCategoryId());
+            stmt.setDouble(3, product.getUnitPrice());
+            stmt.setInt(4, product.getProductId());
+
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    //  SEARCH products by name
+    public List<Product> searchByName(String name) {
+        List<Product> products = new ArrayList<>();
+        String sql = "SELECT ProductID, ProductName, CategoryID, UnitPrice FROM products WHERE ProductName LIKE ?";
+
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, "%" + name + "%");
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Product product = new Product();
+                    product.setProductId(rs.getInt("ProductID"));
+                    product.setProductName(rs.getString("ProductName"));
+                    product.setCategoryId(rs.getInt("CategoryID"));
+                    product.setUnitPrice(rs.getDouble("UnitPrice"));
+                    products.add(product);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return products;
     }
 

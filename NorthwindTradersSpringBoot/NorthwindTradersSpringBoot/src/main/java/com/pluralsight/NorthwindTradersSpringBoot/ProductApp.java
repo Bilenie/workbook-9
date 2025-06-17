@@ -44,7 +44,10 @@ public class ProductApp implements CommandLineRunner {
             System.out.println("\n=== Product Menu ===");
             System.out.println("1. List products");
             System.out.println("2. Add product");
-            System.out.println("3. Exit");
+            System.out.println("3. Update product");
+            System.out.println("4. Delete product");
+            System.out.println("5. Search product by name");
+            System.out.println("6. Exit");
             System.out.print("Enter your choice: ");
 
             // Read the user's choice as a String.
@@ -96,7 +99,59 @@ public class ProductApp implements CommandLineRunner {
 
                     break;
 
-                case "3":
+                case "3": // Update a product
+                    System.out.print("Enter product ID to update: ");
+                    int updateId = Integer.parseInt(myScanner.nextLine());
+
+                    System.out.print("Enter new product Name: ");
+                    String newName = myScanner.nextLine();
+
+                    System.out.print("Enter new category Id: ");
+                    int newCategoryId = Integer.parseInt(myScanner.nextLine());
+
+                    System.out.print("Enter new Product price: ");
+                    double newPrice = Double.parseDouble(myScanner.nextLine());
+
+                    Product updatedProduct = new Product(updateId, newName, newCategoryId, newPrice);
+                    boolean updated = productDao.update(updatedProduct);
+
+                    if (updated) {
+                        System.out.println("Product updated successfully.");
+                    } else {
+                        System.out.println("Product not found.");
+                    }
+                    break;
+
+                case "4": // Delete a product
+                    System.out.print("Enter product ID to delete: ");
+                    int deleteId = Integer.parseInt(myScanner.nextLine());
+
+                    boolean deleted = productDao.deleteById(deleteId);
+
+                    if (deleted) {
+                        System.out.println("Product deleted successfully.");
+                    } else {
+                        System.out.println("Product not found.");
+                    }
+                    break;
+
+                case "5": // Search for a product
+                    System.out.print("Enter name to search: ");
+                    String searchTerm = myScanner.nextLine();
+
+                    List<Product> searchResults = productDao.searchByName(searchTerm);
+
+                    if (searchResults.isEmpty()) {
+                        System.out.println("No matching products found.");
+                    } else {
+                        System.out.println("Matching products:");
+                        for (Product p : searchResults) {
+                            System.out.println(p);
+                        }
+                    }
+                    break;
+
+                case "6":
                     // The user chose option 3 → Exit the program.
 
                     // Print a goodbye message.
@@ -107,7 +162,6 @@ public class ProductApp implements CommandLineRunner {
 
                 default:
                     // The user entered something that is not a valid option.
-
                     // Tell the user the input was invalid and show the menu again.
                     System.out.println("Invalid choice. Please try again.");
                     break;

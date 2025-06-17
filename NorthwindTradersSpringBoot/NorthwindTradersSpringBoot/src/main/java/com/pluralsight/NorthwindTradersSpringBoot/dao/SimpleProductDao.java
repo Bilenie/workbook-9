@@ -50,6 +50,37 @@ public class SimpleProductDao implements ProductDao {
         // Return the list of products.
         return products;
     }
+
+    //  DELETE a product by ID
+    @Override
+    public boolean deleteById(int id) {
+        return products.removeIf(p -> p.getProductId() == id);
+    }
+
+    // UPDATE a product by ID
+    @Override
+    public boolean update(Product updatedProduct) {
+        for (int i = 0; i < products.size(); i++) {
+            Product p = products.get(i);
+            if (p.getProductId() == updatedProduct.getProductId()) {
+                products.set(i, updatedProduct);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //  SEARCH products by name (case-insensitive match)
+    @Override
+    public List<Product> searchByName(String name) {
+        List<Product> results = new ArrayList<>();
+        for (Product p : products) {
+            if (p.getProductName().toLowerCase().contains(name.toLowerCase())) {
+                results.add(p);
+            }
+        }
+        return results;
+    }
 }
 
 

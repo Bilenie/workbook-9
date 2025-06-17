@@ -60,7 +60,7 @@ public class Product {
     @Override
     public String toString() {
         return String.format(
-                "%-10s | %-20s | %-12s | $%8.2f",
+                "%-10s | %-37s | %-1s | $%20.2f",
                 "ID: " + productId,
                 "Name: " + productName,
                 "Category ID: " + categoryId,
