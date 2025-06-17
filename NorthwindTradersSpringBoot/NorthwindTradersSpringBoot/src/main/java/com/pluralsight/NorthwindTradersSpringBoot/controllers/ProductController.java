@@ -15,7 +15,7 @@ public class ProductController {
     @Qualifier("jdbcProductDao")
     private ProductDao productDao;
 
-    // ✅ GET all products
+    // GET all products
     @GetMapping("/api/Products")
     public List<Product> getProduct() {
         return productDao.getAll();
