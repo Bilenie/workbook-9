@@ -5,6 +5,7 @@ import com.pluralsight.NorthwindTradersSpringBoot.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -17,9 +18,12 @@ public class ProductController {
     private ProductDao productDao;
 
     @GetMapping("/api/Products")
-
     public List<Product> getProduct() {
         return productDao.getAll();
+    }
+    @GetMapping("/")
+    public String defaultRequest(@RequestParam(defaultValue = "Beautiful Woman")String name){
+        return "Hello World" + name;
     }
 
 

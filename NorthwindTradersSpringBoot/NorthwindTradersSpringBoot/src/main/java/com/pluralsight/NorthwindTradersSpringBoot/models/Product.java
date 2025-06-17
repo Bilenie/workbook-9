@@ -59,8 +59,12 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product Id :" + productId +
-          ",Product Name :" + productName + ",Category Id :"
-                + categoryId +",Unit Price :" + unitPrice ;
+        return String.format(
+                "%-10s | %-20s | %-12s | $%8.2f",
+                "ID: " + productId,
+                "Name: " + productName,
+                "Category ID: " + categoryId,
+                unitPrice);
     }
+    //String.format("%-12s | %-12s | %-18s | %-18s | %18.2f, %s", date.toString(), time.toString(), description, vendor, amount, type);
 }
