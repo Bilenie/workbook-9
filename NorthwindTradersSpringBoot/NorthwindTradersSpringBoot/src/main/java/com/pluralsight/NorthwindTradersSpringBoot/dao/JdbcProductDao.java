@@ -1,6 +1,7 @@
 package com.pluralsight.NorthwindTradersSpringBoot.dao;
 
 import com.pluralsight.NorthwindTradersSpringBoot.models.Product;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Component;
@@ -14,13 +15,13 @@ import java.util.List;
 public class JdbcProductDao implements ProductDao {
 
     //setting attribute
-    private DataSource dataSource;
+    private BasicDataSource dataSource;
 
 //Generate Constructor
 
     // The @Autowired annotation tells Spring to "inject" the DataSource Bean here.
     @Autowired
-    public JdbcProductDao(DataSource dataSource) {
+    public JdbcProductDao(BasicDataSource dataSource) {
         this.dataSource = dataSource;
     }
 
@@ -37,14 +38,13 @@ public class JdbcProductDao implements ProductDao {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement("""
                      
-                             "INSERT INTO product (ProductID, ProductName, CategoryID) VALUES (?, ?, ?,?)";
+                             INSERT INTO products ( ProductName, CategoryID, UnitPrice) VALUES ( ?, ?,?);
                      
                      """)) {
 
-            stmt.setInt(1, product.getProductId());
-            stmt.setString(2, product.getProductName());
-            stmt.setInt(3, product.getCategoryId());
-            stmt.setDouble(4, product.getUnitPrice());
+            stmt.setString(1, product.getProductName());
+            stmt.setInt(2, product.getCategoryId());
+            stmt.setDouble(3, product.getUnitPrice());
 
             // Execute the INSERT statement — this will add the row to the database.
             stmt.executeUpdate();

@@ -76,6 +76,7 @@ public class ProductApp implements CommandLineRunner {
 
                     System.out.print("Enter category Id : ");
                     int categoryId = myScanner.nextInt();
+                    myScanner.nextLine();//i can also parse it
 
                     // Ask the user for the film's rental rate.
                     System.out.print("Enter Product price: ");

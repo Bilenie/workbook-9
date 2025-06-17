@@ -3,9 +3,10 @@ package com.pluralsight.NorthwindTradersSpringBoot.config;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
-
+@Configuration
 public class DatabaseConfig {
     // We will build the BasicDataSource and store it here.
     private BasicDataSource basicDataSource;
@@ -13,7 +14,7 @@ public class DatabaseConfig {
     // This method defines the DataSource bean.
     // Spring will call this and register the DataSource in the ApplicationContext.
     @Bean
-    public DataSource dataSource() {
+    public BasicDataSource dataSource() {
         return basicDataSource;
     }
 
