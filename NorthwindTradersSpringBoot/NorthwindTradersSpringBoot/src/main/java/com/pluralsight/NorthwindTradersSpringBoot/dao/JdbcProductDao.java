@@ -62,7 +62,7 @@ public class JdbcProductDao implements ProductDao {
         List<Product> products = new ArrayList<>();
 
         // This is the SQL SELECT statement we will run.
-        String sql = "SELECT ProductID, ProductName, CategoryID, UnitPrice";
+        String sql = "SELECT ProductID, ProductName, CategoryID, UnitPrice FROM products";
 /*  try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {*/

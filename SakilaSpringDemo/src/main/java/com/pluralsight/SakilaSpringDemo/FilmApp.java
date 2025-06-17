@@ -31,8 +31,6 @@ public class FilmApp implements CommandLineRunner {
         // After this line runs, your app is running!
         // If you have a CommandLineRunner (like FilmApp), its run() method will now be called.
 
-        //create an instance of our filmDao
-        FilmDao filmDao = new SimpleFilmDao();
 
         // We create a Scanner object so we can read user input from the console.
         Scanner scanner = new Scanner(System.in);
