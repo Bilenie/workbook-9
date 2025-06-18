@@ -23,9 +23,6 @@ public class JdbcProductDao implements ProductDao {
         this.dataSource = dataSource;
     }
 
-    //List<Objects> getAll()
-    // List<Object> searchById(int id);
-
     @Override
     public List<Product> getAll() {
 
@@ -56,5 +53,30 @@ public class JdbcProductDao implements ProductDao {
             throw new RuntimeException(e);
         }
         return products;
+    }
+
+    //  SEARCH products by name
+    public Product searchById (int id) {
+
+        String sql = "SELECT ProductID, ProductName, CategoryID, UnitPrice FROM products WHERE ProductID = ?";
+        Product product = new Product();
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1,  id );
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    //Product product = new Product();
+                    product.setProductId(rs.getInt("ProductID"));
+                    product.setProductName(rs.getString("ProductName"));
+                    product.setCategoryId(rs.getInt("CategoryID"));
+                    product.setUnitPrice(rs.getDouble("UnitPrice"));
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return product;
     }
 }
