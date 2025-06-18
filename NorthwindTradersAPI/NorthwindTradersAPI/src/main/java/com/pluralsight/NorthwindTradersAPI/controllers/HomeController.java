@@ -12,6 +12,5 @@ public class HomeController {
         return "Hello" + " "  + country;
     }
 
-
-
+// get all get id for the product
 }
