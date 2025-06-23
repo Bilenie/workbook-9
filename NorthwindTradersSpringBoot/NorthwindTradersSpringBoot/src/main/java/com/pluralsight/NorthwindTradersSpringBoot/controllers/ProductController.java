@@ -45,8 +45,11 @@ public class ProductController {
     }
 
     @GetMapping("/")
-    public String defaultRequest(@RequestParam(defaultValue = "Java is cool")String name){
-        return "Beautiful Woman/man" + " " + name;
+    public String defaultRequest(@RequestParam(defaultValue = "Java is cool") String name) {
+        if (!name.isEmpty()) {
+           return "Sun is Shining " + " " + name;
+        }
+        return "Hello World";
     }
 
 }
